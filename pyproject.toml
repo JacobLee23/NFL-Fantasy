@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools > 61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nfl-fantasy"
+version = "0.0.0"
+description = ""
+readme = "README.md"
+authors = [ { name = "Jacob Lee", email = "Jacob.J.Lee@outlook.com" } ]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+requires-python = ">=3.6"
+dependencies = []
+
+[project.urls]
+homepage = "https://github.com/JacobLee23/NFL-Fantasy"
+
+[tools.setuptools.packages.find]
+where = ["."]
+include = ["nflfantasy*"]
