@@ -182,8 +182,12 @@ class Record:
     def values(self, value: pd.Series) -> None:
         if not self.scheme.index.equals(value.index):
             raise ValueError(value)
+
+        if isinstance(self._scheme, DefenseST) and value.loc["pa"].sum() != 1:
+            raise ValueError(value)
+
         self._values = value
-    
+
     @property
     def points(self) -> pd.Series:
         """
