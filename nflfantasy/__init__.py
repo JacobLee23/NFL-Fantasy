@@ -1,4 +1,6 @@
 """
 """
 
-from ._points import Scorecard
+from ._points import (
+    Scheme, Record, Scorecard
+)
