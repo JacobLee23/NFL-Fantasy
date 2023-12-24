@@ -2,6 +2,7 @@
 """
 
 import json
+import pandas as pd
 import pathlib
 import typing
 
@@ -10,19 +11,30 @@ class PointScheme:
     """
     """
     default: pathlib.Path
-    
+
     def __init__(self, scheme: pathlib.Path):
         with open(scheme, "r", encoding="utf-8") as file:
             self._scheme = json.load(file)
 
-    def __getitem__(self, item: str) -> typing.Dict[str, float]:
-        return self.scheme[item]
-    
+    def __getattr__(self, name: str) -> typing.Dict[str, float]:
+        return self.scheme[name]
+
+    def __getitem__(self, item: typing.Tuple[str, str]) -> float:
+        return self.scheme[item[0]][item[1]]
+
     @property
     def scheme(self) -> typing.Dict[str, typing.Dict[str, float]]:
         """
         """
         return self._scheme
+
+    @property
+    def keys(self) -> typing.List[typing.Tuple[str, str]]:
+        """
+        """
+        return [
+            (a, b) for a, z in self.scheme.items() for b in z
+        ]
 
 
 class Offense(PointScheme):
@@ -66,19 +78,26 @@ class Scorecard:
         self._defensest = DefenseST(defensest)
 
     @property
-    def offense(self) -> Offense:
+    def offense(self) -> pd.DataFrame:
         """
         """
-        return self._offense
-    
+        return self._scheme(self._offense)
+
     @property
     def kickers(self) -> Kickers:
         """
         """
-        return self._kickers
-    
+        return self._scheme(self._kickers)
+
     @property
     def defensest(self) -> DefenseST:
         """
         """
-        return self._defensest
+        return self._scheme(self._defensest)
+
+    def _scheme(self, scheme: PointScheme) -> pd.Series:
+        """
+        :param scheme:
+        :return:
+        """
+        return pd.Series({k: scheme[k] for k in scheme.keys})
