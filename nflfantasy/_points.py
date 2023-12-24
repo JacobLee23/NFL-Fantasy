@@ -136,6 +136,25 @@ class Scheme:
         
         self._defensest = value
 
+    def new_record(
+        self, category: typing.Literal["offense", "kickers", "defensest"]
+    ) -> "Record":
+        """
+        :param category:
+        :return:
+        :raise ValueError:
+        """
+        if category == "offense":
+            scheme = self.offense
+        elif category == "kickers":
+            scheme = self.kickers
+        elif category == "defensest":
+            scheme = self.defensest
+        else:
+            raise ValueError(category)
+        
+        return Record(scheme)
+
 
 class Record:
     """
@@ -189,7 +208,7 @@ class Record:
 class Scorecard:
     """
     """
-    def __init__(self, *records: Record):
+    def __init__(self, records: typing.List[Record]):
         self._records = list(records)
 
     @property
@@ -203,3 +222,55 @@ class Scorecard:
         if not all(isinstance(x, Record) for x in value):
             raise ValueError(value)
         self._records = value
+
+    @property
+    def offense(self) -> pd.DataFrame:
+        """
+        """
+        return self.scorecard("offense")
+    
+    @property
+    def kickers(self) -> pd.DataFrame:
+        """
+        """
+        return self.scorecard("kickers")
+    
+    @property
+    def defensest(self) -> pd.DataFrame:
+        """
+        """
+        return self.scorecard("defensest")
+    
+    @property
+    def points(self) -> pd.Series:
+        """
+        """
+        return pd.concat(
+            [self.offense["points"], self.kickers["points"], self.defensest["points"]]
+        ).reset_index(drop=True)
+    
+    @property
+    def total(self) -> float:
+        """
+        """
+        return self.points.sum()
+    
+    def scorecard(self, category: str) -> pd.DataFrame:
+        """
+        :param category:
+        :return:
+        """
+        if category == "offense":
+            scheme = Offense
+        elif category == "kickers":
+            scheme = Kickers
+        elif category == "defensest":
+            scheme = DefenseST
+        else:
+            raise ValueError(category)
+        
+        records = list(filter(lambda x: isinstance(x._scheme, scheme), self.records))
+        frame = pd.DataFrame(x.record["values"] for x in records).reset_index(drop=True)
+        frame.loc[:, "points"] = pd.Series([x.total for x in self.records])
+
+        return frame
