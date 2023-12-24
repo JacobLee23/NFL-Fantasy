@@ -48,7 +48,7 @@ class PointScheme:
 class Offense(PointScheme):
     """
     """
-    default = pathlib.Path("data", "points", "offense.json")
+    default = pathlib.Path(__file__).parent / "data" / "points" / "offense.json"
 
     def __init__(self, path: pathlib.Path = default):
         super().__init__(path)
@@ -57,7 +57,7 @@ class Offense(PointScheme):
 class Kickers(PointScheme):
     """
     """
-    default = pathlib.Path("data", "points", "kickers.json")
+    default = pathlib.Path(__file__).parent / "data" / "points" / "kickers.json"
 
     def __init__(self, path: pathlib.Path = default):
         super().__init__(path)
@@ -66,7 +66,7 @@ class Kickers(PointScheme):
 class DefenseST(PointScheme):
     """
     """
-    default = pathlib.Path("data", "points", "defensest.json")
+    default = pathlib.Path(__file__).parent / "data" / "points" / "defensest.json"
 
     def __init__(self, path: pathlib.Path = default):
         super().__init__(path)
