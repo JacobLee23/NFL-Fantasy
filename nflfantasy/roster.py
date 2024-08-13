@@ -80,7 +80,7 @@ class Positions:
         with io.StringIO() as buffer:
             self.series.to_string(buffer)
 
-        return str(buffer)
+        return buffer.read()
 
     def __len__(self) -> int:
         return sum(self.schema.values())
@@ -199,7 +199,11 @@ class Roster:
     """
     def __init__(self, positions: Positions, *players: Player):
         self._positions = positions
-        self._roster = {k: tuple(None for _ in range(self.positions[k])) for k in self.positions}
+        self._roster = {
+            k: tuple(
+                None for _ in range(self.positions.schema[k])
+            ) for k in self.positions.positions
+        }
 
         self.add(*players)
 
@@ -210,7 +214,7 @@ class Roster:
         with io.StringIO() as buffer:
             self.series.to_string(buffer)
 
-        return str(buffer)
+        return buffer.read()
 
     @property
     def positions(self) -> Positions:
