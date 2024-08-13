@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 pandas = "*"
+beautifulsoup4 = "*"
+lxml = "*"
+html5lib = "*"
 
 [dev-packages]
 build = "*"
