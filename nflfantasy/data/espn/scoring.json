@@ -1,0 +1,177 @@
+{
+    "OFF": {
+        "PASS": {
+            "ATT": null,
+            "CMP": null,
+            "INC": null,
+            "YD": 0.04,
+            "TD": 4,
+            "TD 40+ YD": null,
+            "TD 50+ YD": null,
+            "INT": -2,
+            "2PT": 2,
+            "SACK": null,
+            "300-399 YD": null,
+            "400+ YD": null
+        }, "RUSH": {
+            "ATT": null,
+            "YD": 0.10,
+            "TD": 6,
+            "TD 40+ YD": null,
+            "TD 50+ YD": null,
+            "2PT": 2,
+            "100-199 YD": null,
+            "200+ YD": null
+        }, "REC": {
+            "TGT": null,
+            "REC": null,
+            "YD": 0.10,
+            "TD": 6,
+            "TD 40+ YD": null,
+            "TD 50+ YD": null,
+            "2PT": 2,
+            "100-199 YD": null,
+            "200+ YD": null
+        }, "KR": {
+            "YD": null,
+            "TD": 6
+        }, "PR": {
+            "YD": null,
+            "TD": 6
+        }, "FUM": {
+            "TOT": null,
+            "TD": 6,
+            "LOST": -2
+        }
+    }, "K": {
+        "PAT": {
+            "ATT": null,
+            "CMP": 1,
+            "MISS": null
+        }, "FG ATT": {
+            "TOT": null,
+            "0-39": null,
+            "40-49": null,
+            "50+": null
+        }, "FG CMP": {
+            "TOT": null,
+            "0-39": 3,
+            "40-49": 4,
+            "50+": 5
+        }, "FG MISS": {
+            "TOT": null,
+            "0-39": -1,
+            "40-49": -1,
+            "50+": -1
+        }
+    }, "P": {
+        "PUNTS": {
+            "TOT": null,
+            "YD": null,
+            "IN10": null,
+            "IN20": null,
+            "BLK": null
+        }, "RET": {
+            "TOT": null,
+            "YD": null,
+            "TB": null,
+            "FC": null
+        }, "AVG": {
+            "44.0+": null,
+            "42.0-43.9": null,
+            "40.0-41.9": null,
+            "38.0-39.9": null,
+            "36.0-37.9": null,
+            "34.0-35.9": null,
+            "0-33.9": null
+        }
+    }, "IDP": {
+        "T": {
+            "TOT": null,
+            "SACK": null,
+            "SFTY": null,
+            "AST": null,
+            "SOLO": null,
+            "TFL": null
+        }, "INT": {
+            "TOT": null,
+            "TD": null
+        }, "FUM": {
+            "TD": null,
+            "REC": null,
+            "FF": null
+        }, "KB": {
+            "TOT": null,
+            "TD": null
+        }, "PASS": {
+            "DEFL": null
+        }
+    }, "D/ST": {
+        "KR": {
+            "YD": null,
+            "TD": 6
+        }, "PR": {
+            "YD": null,
+            "TD": 6
+        }, "T": {
+            "TOT": null,
+            "SACK": 1,
+            "SFTY": 2,
+            "TFL": null
+        }, "INT": {
+            "TOT": 2,
+            "TD": 6
+        }, "KB": {
+            "TOT": 2,
+            "TD": 6
+        }, "FUM": {
+            "TD": 6,
+            "REC": 2,
+            "FF": null
+        }, "PASS": {
+            "DEFL": null
+        }, "PA": {
+            "TOT": null,
+            "0": 5,
+            "2-6": 4,
+            "7-13": 3,
+            "14-17": 1,
+            "18-21": 0,
+            "22-27": 0,
+            "28-34": -1,
+            "35-45": -3,
+            "46+": -5
+        }, "YA": {
+            "TOT": null,
+            "0-99": null,
+            "100-199": null,
+            "200-299": null,
+            "300-349": null,
+            "350-399": null,
+            "400-449": null,
+            "450-499": null,
+            "500-549": null,
+            "550+": null
+        }
+    }, "HC": {
+        "PF": {
+            "TOT": null,
+            "W": null,
+            "L": null,
+            "T": null
+        }, "WM": {
+            "25+": null,
+            "20-24": null,
+            "15-19": null,
+            "10-14": null,
+            "5-9": null,
+            "1-4": null
+        }, "LM": {
+            "1-4": null,
+            "10-14": null,
+            "15-19": null,
+            "20-24": null,
+            "25+": null
+        }
+    }
+}
