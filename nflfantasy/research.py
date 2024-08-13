@@ -12,58 +12,34 @@ import pandas as pd
 import requests
 
 
-class Rankings:
+class Research:
     """
     """
+    url: str
 
-
-class FantasyPointsAgainst:
-    """
-    """
-
-
-class Projections:
-    """
-    """
-
-
-class ScoringLeaders:
-    """
-    """
-
-
-class PlayerTrends:
-    """
-    """
-
-
-class Players:
-    """
-    """
-    url = "https://fantasy.nfl.com/research/players"
-
-    _league_id: typing.Literal[0] = 0
     _position: typing.Union[typing.Literal["O"], int] = "O"
-    _stat_category: typing.Literal["stats"] = "stats"
+    _stat_category: typing.Literal["stats", "projectedStats"]
     _stat_season: int = datetime.datetime.today().year
-    _stat_type: typing.Literal["seasonStats", "weekStats"] = "seasonStats"
+    _stat_type: typing.Literal[
+        "seasonStats", "seasonProjectedStats", "weekStats", "weekProjectedStats"
+    ] = "seasonStats"
     _stat_week: typing.Optional[int] = None
 
-    def __init__(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+    def __init__(
+        self, *, position: typing.Union[str, int] = _position,
+        stat_season: int = _stat_season,
+        stat_type: str = _stat_type, stat_week: typing.Optional[int] = _stat_week
+    ):
+        self.position = position
+        self.stat_season = stat_season
+        self.stat_type = stat_type
+        self.stat_week = stat_week
 
     @property
     def league_id(self) -> typing.Literal[0]:
         """
         """
-        return self._league_id
-
-    @league_id.setter
-    def league_id(self, value: int) -> None:
-        if value != 0:
-            raise ValueError(value)
-        self._league_id = value
+        return 0
 
     @property
     def position(self) -> typing.Union[typing.Literal["O"], int]:
@@ -87,16 +63,10 @@ class Players:
         self._position = value
 
     @property
-    def stat_category(self) -> typing.Literal["stats"]:
+    def stat_category(self) -> typing.Literal["stats", "projectedStats"]:
         """
         """
         return self._stat_category
-
-    @stat_category.setter
-    def stat_category(self, value: str) -> None:
-        if value != "stats":
-            raise ValueError(value)
-        self._stat_category = value
 
     @property
     def stat_season(self) -> int:
@@ -109,18 +79,20 @@ class Players:
         self._stat_season = value
 
     @property
-    def stat_type(self) -> typing.Literal["seasonStats", "weekStats"]:
+    def stat_type(self) -> typing.Literal[
+        "seasonStats", "seasonProjectedStats", "weekStats", "weekProjectedStats"
+    ]:
         """
         """
         return self._stat_type
 
     @stat_type.setter
     def stat_type(self, value: str) -> None:
-        if value not in ("seasonStats", "weekStats"):
+        if value not in ("seasonStats", "seasonProjectedStats", "weekStats", "weekProjectedStats"):
             raise ValueError(value)
         self._stat_type = value
 
-        if value == "seasonStats":
+        if value in ("seasonStats", "seasonProjectedStats"):
             self.week = None
 
     @property
@@ -131,9 +103,9 @@ class Players:
 
     @stat_week.setter
     def stat_week(self, value: typing.Optional[int]) -> None:
-        if self.stat_type == "seasonStats":
+        if self.stat_type in ("seasonStats", "seasonProjectedStats"):
             self._stat_week = None
-        elif self.stat_type == "weekStats":
+        elif self.stat_type in ("weekStats", "weekProjectedStats"):
             if value is None:
                 raise ValueError(value)
             self._stat_week = value
@@ -170,11 +142,27 @@ class Players:
 
         dataframe = pd.concat(dataframes).reset_index(drop=True).replace("-", 0)
 
+        return self._refine(dataframe)
+
+    def _refine(self, dataframe: pd.DataFrame) -> pd.DataFrame:
+        """
+        :param dataframe:
+        :return:
+        """
         team = self._team(dataframe.iloc[:, 0])
         opponent = self._opponent(dataframe.iloc[:, 1])
-        dataframe.drop(columns=dataframe.columns[:2], inplace=True)
 
-        return pd.concat([team, opponent, dataframe], axis=1)
+        if dataframe.columns[2][1] == "GP":
+            series = pd.Series(
+                dataframe.iloc[:, 2], index=dataframe.index, name=("GP", "GP")
+            )
+            return pd.concat(
+                [team, opponent, series, dataframe.drop(columns=dataframe.columns[:3])], axis=1
+            )
+        else:
+            return pd.concat(
+                [team, opponent, dataframe.drop(columns=dataframe.columns[:2])], axis=1
+            )
 
     def _team(self, series: pd.Series) -> pd.DataFrame:
         """
@@ -221,3 +209,75 @@ class Players:
         )
 
         return dataframe
+
+
+class Rankings:
+    """
+    """
+
+
+class FantasyPointsAgainst:
+    """
+    """
+
+
+class Projections(Research):
+    """
+    """
+    url = "https://fantasy.nfl.com/research/projections"
+
+    _stat_category = "projectedStats"
+
+    def __init__(self, **kwargs):
+        super().__init__(stat_type="seasonProjectedStats", **kwargs)
+
+    @property
+    def stat_type(self) -> typing.Literal["seasonProjectedStats", "weekProjectedStats"]:
+        """
+        """
+        return self._stat_type
+
+    @stat_type.setter
+    def stat_type(self, value: str) -> None:
+        if value not in ("seasonProjectedStats", "weekProjectedStats"):
+            raise ValueError(value)
+        self._stat_type = value
+
+        if value == "seasonProjectedStats":
+            self.week = None
+
+
+class ScoringLeaders:
+    """
+    """
+
+
+class PlayerTrends:
+    """
+    """
+
+
+class Players(Research):
+    """
+    """
+    url = "https://fantasy.nfl.com/research/players"
+
+    _stat_category = "stats"
+
+    def __init__(self, **kwargs):
+        super().__init__(stat_type="seasonStats", **kwargs)
+
+    @property
+    def stat_type(self) -> typing.Literal["seasonStats", "weekStats"]:
+        """
+        """
+        return self._stat_type
+
+    @stat_type.setter
+    def stat_type(self, value: str) -> None:
+        if value not in ("seasonStats", "weekStats"):
+            raise ValueError(value)
+        self._stat_type = value
+
+        if value == "seasonStats":
+            self.week = None
